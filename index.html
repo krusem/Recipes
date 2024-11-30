@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JSON Data Display</title>
+<style>
+  .collapsible {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+
+  .active, .collapsible:hover {
+    background-color: #ccc;
+  }
+
+  .content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+  }
+</style>
+</head>
+<body>
+
+<h1>JSON Data</h1>
+
+<div id="data-container"></div>
+
+<script>
+fetch('data.json') 
+  .then(response => response.json())
+  .then(data => {
+    const container = document.getElementById('data-container');
+
+    data.forEach(item => {
+      // Create collapsible element
+      const collapsible = document.createElement('button');
+      collapsible.classList.add('collapsible');
+      collapsible.textContent = item.title; // Assuming your JSON has a 'title' property
+
+      // Create content div
+      const content = document.createElement('div');
+      content.classList.add('content');
+      content.innerHTML = `<p>${item.description}</p>`; // Assuming a 'description' property
+
+      // Append elements to container
+      container.appendChild(collapsible);
+      container.appendChild(content);
+
+      // Add click event to toggle content
+      collapsible.addEventListener('click', function() {
+        this.classList.toggle('active');
+        var content = this.nextElementSibling;
+        if (content.style.display === 'block') {
+          content.style.display = 'none';
+        } else {
+          content.style.display = 'block';
+        }
+      });
+    });
+  })
+  .catch(error => {
+    console.error('Error fetching JSON:', error);
+  });
+</script>
+
+</body>
+</html>
